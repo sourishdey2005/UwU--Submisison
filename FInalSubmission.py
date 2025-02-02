@@ -1,12 +1,12 @@
 import streamlit as st
-import google.generativeai as genai  # Corrected import statement
+import google.generativeai as genai
 import speech_recognition as sr  # Voice Input
 import cv2  # Camera Integration
 import easyocr  # OCR for Handwritten Text Recognition (Replaces Tesseract)
 import sqlite3  # User authentication & storage
 from uuid import uuid4  # Unique ID for versioning
 import os
-from PIL import Image  # For file upload support
+from PIL import Image
 
 # --- API CONFIGURATION ---
 GEMINI_API_KEY = "AIzaSyCt0VCZs64y7kV1H7hKQCoWa0MkJm6oUxw"  # Replace with your actual API key
@@ -217,21 +217,20 @@ def main():
                         st.error(f"❌ OCR Failed: {e}")
                 else:
                     st.error("❌ Failed to capture image")
-    
-    # --- Upload Image for OCR ---
-    with col2:
-        uploaded_file = st.file_uploader("📂 Upload an image", type=["jpg", "jpeg", "png"])
-        if uploaded_file is not None:
-            image = Image.open(uploaded_file)
-            st.image(image, caption="Uploaded Image", use_column_width=True)
-            try:
-                reader = easyocr.Reader(['en'])
-                result = reader.readtext(image)
-                text = " ".join([res[1] for res in result])
-                st.session_state.user_prompt += " " + text
-                st.text_area("📝 Extracted Text from Image:", st.session_state.user_prompt, height=150)
-            except Exception as e:
-                st.error(f"❌ OCR Failed: {e}")
+
+    # --- File Upload for Images ---
+    uploaded_image = st.file_uploader("📁 Upload an image", type=["jpg", "jpeg", "png"])
+    if uploaded_image is not None:
+        image = Image.open(uploaded_image)
+        st.image(image, caption="📸 Uploaded Image", use_column_width=True)
+        try:
+            reader = easyocr.Reader(['en'])
+            result = reader.readtext(image)
+            text = " ".join([res[1] for res in result])
+            st.session_state.user_prompt += " " + text
+            st.text_area("📝 Extracted Text from Image:", st.session_state.user_prompt, height=150)
+        except Exception as e:
+            st.error(f"❌ OCR Failed: {e}")
     
     # --- Code Generation ---
     if st.button("✨ Generate Code!"):
