@@ -1,7 +1,8 @@
-google-generativeai==0.0.5
-streamlit
-opencv-python-headless
-easyocr
-speechrecognition
-pillow
-sqlite3
+streamlit==1.18.0
+google-generativeai==0.1.0
+easyocr==1.4.0
+opencv-python-headless==4.7.0.72
+speechrecognition==3.8.1
+pillow==8.4.0
+numpy==1.23.1
+sqlite3==3.36.0
